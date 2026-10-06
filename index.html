@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MetaKernelBench: Measuring GPU Kernel Knowledge Transfer Beyond Code</title>
+<meta name="description" content="MetaKernelBench measures whether experience distilled from an attempt in one kernel domain-specific language (DSL) improves a fresh attempt at the same problem in another.">
+<meta property="og:title" content="MetaKernelBench: Measuring GPU Kernel Knowledge Transfer Beyond Code">
+<meta property="og:description" content="MetaKernelBench measures whether experience distilled from an attempt in one kernel domain-specific language (DSL) improves a fresh attempt at the same problem in another.">
+<meta property="og:image" content="https://yige24.github.io/MetaKernelBench/assets/1pipeline.png">
+<meta property="og:url" content="https://yige24.github.io/MetaKernelBench">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;700&family=Noto+Sans:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root { --text: #4a4a4a; --strong: #363636; --link: #3298dc; }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: #fff; color: var(--text); font-family: "Noto Sans", sans-serif; font-size: 16px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+  a { color: var(--link); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .container { max-width: 960px; margin: 0 auto; }
+  .narrow { max-width: 768px; margin: 0 auto; }
+
+  nav { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; min-height: 3.25rem; padding: 0 1.5rem; }
+  nav a { color: var(--text); padding: 0.5rem 0.75rem; }
+  nav a:hover { color: var(--link); text-decoration: none; }
+
+  .hero { padding: 3rem 1.5rem 0; text-align: center; }
+  .title { font-family: "Google Sans", "Noto Sans", sans-serif; color: var(--strong); font-weight: 600; line-height: 1.125; margin: 0; }
+  h1.title { font-size: 2.5rem; margin: 0 auto 1.5rem; }
+  .authors, .affil { font-family: "Google Sans", "Noto Sans", sans-serif; font-size: 1.25rem; margin: 0; }
+  .authors { margin-bottom: 1rem; }
+  .authors span, .affil span { display: inline-block; margin: 0 0.5rem; }
+  .note { font-size: 15px; margin: 0.5rem 0 0; }
+  .logos { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 2rem; margin: 1.5rem 0 0; }
+  .logos img { height: 72px; width: auto; }
+  .lab { margin: 1.5rem 0 0; }
+  .lab img { height: 72px; width: auto; }
+  .links { display: flex; justify-content: center; flex-wrap: wrap; gap: 0.5rem; margin: 2rem 0 0; }
+  .button { display: inline-flex; align-items: center; gap: 0.5rem; height: 2.5rem; padding: 0 1.25rem; border-radius: 9999px; background: var(--strong); color: #fff; font-size: 1rem; }
+  .button:hover { background: #292929; color: #fff; text-decoration: none; }
+  .button svg { width: 1rem; height: 1rem; fill: currentColor; }
+
+  .teaser { padding: 2.5rem 1.5rem 1.5rem; }
+  .section { padding: 3rem 1.5rem; }
+  h2.title { font-size: 2rem; text-align: center; margin-bottom: 1.5rem; }
+  h3.title { font-size: 1.5rem; text-align: center; margin: 2.5rem 0 1.25rem; }
+  h2.title.left { text-align: left; }
+  figure { margin: 0; }
+  figure + figure { margin-top: 2rem; }
+  figure img { width: 100%; height: auto; display: block; }
+  figcaption { text-align: justify; margin-top: 1.25rem; }
+  p { text-align: justify; margin: 1rem 0 0; }
+  .hero p { text-align: center; }
+  b { color: var(--strong); }
+  pre { background: #f5f5f5; color: var(--text); padding: 1.25em 1.5em; overflow-x: auto; font-size: 0.875em; border-radius: 4px; margin: 0; }
+  code { font-family: ui-monospace, Menlo, Consolas, monospace; }
+
+  @media (max-width: 768px) {
+    h1.title { font-size: 1.75rem; }
+    .authors, .affil { font-size: 1.1rem; }
+    .logos { gap: 1.25rem; }
+    .logos img, .lab img { height: 56px; }
+    figcaption, p { text-align: left; }
+    .authors br { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#abstract">Abstract</a>
+  <a href="#problem-set">Problem Set</a>
+  <a href="#results">Results</a>
+  <a href="#bibtex">BibTeX</a>
+</nav>
+
+<section class="hero">
+  <div class="container">
+    <h1 class="title">MetaKernelBench: Measuring GPU Kernel Knowledge Transfer Beyond Code</h1>
+    <p class="authors">
+      <span><a href="https://yige24.github.io">Xueyi Chen</a><sup>1*</sup></span>
+      <span>Shiyu Liu<sup>1,2*</sup></span>
+      <span><a href="https://jinxins.github.io/">Xin Jin</a><sup>1</sup></span>
+      <span><a href="https://pillor9.github.io/">Yuhua Zheng</a><sup>1,3</sup></span>
+      <span><a href="https://profile.slowist.top/">Xin Li</a><sup>1,3</sup></span><br>
+      <span><a href="https://deadlykitten4.github.io/">Haolei Bai</a><sup>1</sup></span>
+      <span><a href="https://alrightlone.github.io/">Junhan Zhu</a><sup>1</sup></span>
+      <span><a href="https://huanwang.tech/">Huan Wang</a><sup>1†</sup></span>
+    </p>
+    <p class="affil">
+      <span><sup>1</sup>Westlake University</span>
+      <span><sup>2</sup>Shanghai Jiao Tong University</span>
+      <span><sup>3</sup>Zhejiang University</span>
+    </p>
+    <p class="note"><sup>*</sup>Equal contribution &nbsp; <sup>†</sup>Corresponding author</p>
+    <p class="note">{chenxueyi,wanghuan}@westlake.edu.cn</p>
+    <div class="logos">
+      <img src="assets/logos/westlake.svg" alt="Westlake University">
+      <img src="assets/logos/sjtu.svg" alt="Shanghai Jiao Tong University">
+      <img src="assets/logos/zju.svg" alt="Zhejiang University">
+    </div>
+    <div class="lab">
+      <img src="assets/logos/encodelab.png" alt="ENCODE Lab">
+    </div>
+    <div class="links">
+      <a class="button" href="https://arxiv.org/pdf/2610.05014">
+        <svg viewBox="0 0 24 24"><path d="M6 2h8l6 6v14H6zm7 1.5V9h5.5zM8 13h8v1.5H8zm0 3h8v1.5H8z"/></svg>Paper</a>
+      <a class="button" href="https://arxiv.org/abs/2610.05014">
+        <svg viewBox="0 0 24 24"><path d="M4 4h16v2H4zm0 7h16v2H4zm0 7h10v2H4z"/></svg>arXiv</a>
+      <a class="button" href="https://github.com/YIGE24/MetaKernelBench">
+        <svg viewBox="0 0 24 24"><path d="M12 .5A11.5 11.5 0 0 0 8.4 22.9c.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.2 1.2a11 11 0 0 1 5.8 0c2.2-1.5 3.2-1.2 3.2-1.2.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.2c0 .3.2.7.8.6A11.5 11.5 0 0 0 12 .5z"/></svg>Code</a>
+    </div>
+  </div>
+</section>
+
+<section class="teaser">
+  <div class="container">
+    <figure>
+      <img src="assets/1pipeline.png" alt="Overview of the MetaKernelBench pipeline">
+      <figcaption>
+        <b>Overview of the MetaKernelBench pipeline.</b>
+        <b>Left:</b> one DSL-neutral specification yields paired CuTe DSL and TIRx variants.
+        <b>Middle:</b> solo attempts use verifier feedback to optimize implementations and distill findings into natural-language skills.
+        <b>Right:</b> only the source skill crosses to a fresh attempt in the other DSL, and paired lift compares its implementation with the solo attempt's.
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="section" id="abstract">
+  <div class="narrow">
+    <h2 class="title">Abstract</h2>
+    <p>
+      Recent GPU kernel optimization agents retain what they learn in knowledge bases or as distilled skills.
+      Kernel benchmarks score each attempt's implementation for correctness and speed but leave the reuse value of retained experience unmeasured.
+      We introduce <b>MetaKernelBench</b>, which measures whether experience distilled from an attempt in one kernel domain-specific language (DSL) improves a fresh attempt at the same problem in another.
+      Its 74 problems are fused subgraphs in six families, each posed as a pair of CuTe DSL and TIRx variants that differ only in the DSL.
+      The agent first attempts each variant solo and is instructed to distill what it learns into a natural-language skill, which is transferred whether or not the source attempt passes verification.
+      The skill is the only extra input to a skill-conditioned attempt by the same model in the other DSL.
+      We compare each skill-conditioned attempt with the solo attempt on the same variant under matched per-attempt budgets, scoring correctness and end-to-end runtime.
+      Across six models and both directions, paired lift over solo attempts ranges from −19% to +29%.
+      Four models gain in both directions, yet regressions occur on 16% to 45% of problems in every model and direction.
+      Outcomes follow the source attempt's result relative to the target's solo attempt rather than source success alone, improving in 71% of comparisons when the source stands above and regressing in 54% when it stands below.
+      MetaKernelBench complements implementation-quality metrics by measuring same-problem cross-DSL kernel knowledge transfer.
+    </p>
+  </div>
+</section>
+
+<section class="section" id="problem-set">
+  <div class="container">
+    <h2 class="title">Problem Set</h2>
+    <figure>
+      <img src="assets/2problem_set.png" alt="Construction and composition of the MetaKernelBench problem set">
+      <figcaption>
+        <b>Construction and composition of the MetaKernelBench problem set.</b>
+        <b>Left:</b> manual screening of fused subgraphs from four upstream sources yields 74 fixed-workload problems.
+        <b>Right:</b> six families show problem counts, representative computation patterns, and numerical formats.
+      </figcaption>
+    </figure>
+    <p>
+      MetaKernelBench uses fused subgraphs traceable to production models, serving stacks, or published reference implementations.
+      The 74-problem catalog includes 42 problems adapted from SOL-ExecBench and 20 from FlashInfer-Trace and FlashInfer-Bench.
+      The catalog contains 8 cache-maintenance problems constructed from vLLM tests and kernels and 4 linear-attention problems authored from official model configurations and tests in flash-linear-attention.
+      Each problem fixes a workload configuration and input distribution, selecting the largest admissible workload when multiple upstream records exist.
+    </p>
+  </div>
+</section>
+
+<section class="section" id="results">
+  <div class="container">
+    <h2 class="title">Results</h2>
+
+    <h3 class="title">Overall Transfer Outcomes</h3>
+    <figure>
+      <img src="assets/table1_cross_dsl_transfer.png" alt="Cross-DSL skill transfer against the target variant's solo attempts">
+      <figcaption>
+        <b>Cross-DSL skill transfer against the target variant's solo attempts.</b> Cells report help rate T, paired lift ΔGM, and harm rate H in percent, with green bars showing T, orange bars showing H, and the gap the neutral share.
+        Underlining marks the highest ΔGM in each direction and column.
+      </figcaption>
+    </figure>
+    <figure>
+      <img src="assets/3paired_lift_by_problem.png" alt="Problem-level paired ratios by model and transfer direction">
+      <figcaption><b>Problem-level paired ratios by model and transfer direction.</b></figcaption>
+    </figure>
+    <p>
+      Skill conditioning yields paired lifts from −19.1% to +29.3% across six models and both directions in single-attempt outcomes.
+      Gemini 3.7 Flash, DeepSeek-V4-Pro, GLM-5.3, and GPT-5.6 Sol gain in both directions, by 2.3% to 29.3%.
+      Help and harm occur for every model and direction, at rates of 21.6% to 40.5% and 16.2% to 44.6%, respectively.
+      Among the 277 helped comparisons, the reverse direction on the same model and problem is harmed in 41.5% and helped in 23.1%, with harm exceeding help for each of the six models.
+    </p>
+
+    <h3 class="title">Implementation Quality and Transfer Outcomes</h3>
+    <figure>
+      <img src="assets/4transfer_by_relative_standing.png" alt="Transfer outcomes by the source attempt's tier relative to the solo attempt's">
+      <figcaption>
+        <b>Transfer outcomes by the source attempt's tier relative to the solo attempt's.</b> Each panel pools a model's comparisons in both directions, with skips counted as neutral and ΔGM in percent.
+        Only helped and harmed segments of at least 10% carry value labels.
+      </figcaption>
+    </figure>
+    <p>
+      Pooled over models and directions, 71.2% of comparisons are helped and 8.1% harmed with the source above, 25.7% and 21.8% at the same tier, and 10.6% and 53.8% with it below.
+      Help rate follows this ordering in every model, with 55.0% to 94.1% helped when the source stands above and 35.3% to 72.4% harmed when it stands below.
+      Skill-conditioned outcomes thus track the source attempt's standing rather than its verdict, so a passing source does not guarantee beneficial reuse and a failed source does not preclude it.
+    </p>
+
+    <h3 class="title">Skill Content across Transfer Outcomes</h3>
+    <figure>
+      <img src="assets/6transfer_cases_glm53.png" alt="Two GLM-5.3 transfers from passing source implementations">
+      <figcaption>
+        <b>Two GLM-5.3 transfers from passing source implementations.</b>
+        <b>Top:</b> CuTe DSL to TIRx on p68, helped, reusing a thread mapping and a diagnostic control.
+        <b>Bottom:</b> TIRx to CuTe DSL on p71, harmed, retaining an eager recurrence.
+        Tags mark whether a graded source submission supports each claim, and runtimes are unclipped end-to-end times against solo.
+      </figcaption>
+    </figure>
+    <p>
+      The p68 source skill records verification recipes and a bounded failure diagnosis, and the TIRx skill-conditioned attempt reuses the recorded thread mapping, reruns the recorded control, fixes the indexing fault the source had suspected, fuses the recurrence the source could not, and records the same diagnosis in its own skill.
+      The p71 source skill records an unsupported closure that rules out folding the recurrence, and the CuTe DSL skill-conditioned attempt cites it, retains eager execution, and never completes the native recurrence that the solo attempt implements.
+      These traces show skill uptake, but the runtime comparisons do not isolate its causal contribution.
+    </p>
+  </div>
+</section>
+
+<section class="section" id="bibtex">
+  <div class="container">
+    <h2 class="title left">BibTeX</h2>
+<pre><code>@article{chen2026metakernelbench,
+  title   = {MetaKernelBench: Measuring GPU Kernel Knowledge Transfer Beyond Code},
+  author  = {Chen, Xueyi and Liu, Shiyu and Jin, Xin and Zheng, Yuhua and Li, Xin
+             and Bai, Haolei and Zhu, Junhan and Wang, Huan},
+  journal = {arXiv preprint arXiv:2610.05014},
+  year    = {2026}
+}</code></pre>
+  </div>
+</section>
+
+</body>
+</html>
