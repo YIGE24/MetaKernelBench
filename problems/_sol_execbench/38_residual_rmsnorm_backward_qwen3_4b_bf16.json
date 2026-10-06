@@ -1,0 +1,115 @@
+{
+ "problem": "38_residual_rmsnorm_backward_qwen3_4b_bf16",
+ "category": "mlp_norm",
+ "subset": "L1",
+ "row": 12,
+ "workload": 1,
+ "layout": "\"\"\"Compute backward gradients for residual RMS normalization with shared hidden-state and residual gradients.\"\"\"\n\n# Source: SOL-ExecBench\n# Reference: SOL-ExecBench/data/benchmark/L1/\ue001\n# Workload: SOL-ExecBench/data/benchmark/L1/\ue001/workload.jsonl\n#   record \ue002 (\ue000 \ue000 \ue000 axes exact; values re-drawn per draw,\n#   norm weight drawn near the trained regime)\n# License: NVIDIA Evaluation Dataset License Agreement\n# Notice: Derived from the nvidia/SOL-ExecBench dataset, Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES.\n#   Assembled locally from your own copy of that dataset; not covered by this repository's Apache-2.0 license.\n\nimport torch\n\nBATCH_SIZE = 64\nSEQ_LEN = 8192\nHIDDEN_SIZE = 2560\n\n\ue000\ue000\ue000\ue000\ue000\ue000\n\ue000 reference\ue000\n    \ue000\ue000 \ue000\ue000\ue000\ue000\n    \ue000\ue000 \ue000\ue000\ue000\ue000\n    \ue000\ue000 \ue000\ue000\ue000\ue000\n    \ue000\ue000 \ue000\ue000\ue000,\n) -> tuple[\ue000\ue000\ue000\ue000 \ue000\ue000\ue000\ue000 \ue000\ue000\ue000]:\n    compute_dtype = torch.promote_types(grad_output.dtype, \ue000\ue000\ue000\ue000\n    \ue000 \ue000 \ue000\ue000\ue000\ue000compute_dtype\ue000\n\n    \ue000 \ue000 \ue000\ue000 \ue000 \ue000\ue000\ue000\ue000\ue000\ue000\ue000\ue000\ue000\ue000 \ue000\ue000\ue000\n\n    \ue000 \ue000 \ue000 \ue000 \ue000\n\n    \ue000 \ue000 \ue000\ue000 \ue000 \ue000\ue000\ue000\ue000\ue000\ue000\ue000\ue000\ue000\ue000 \ue000\ue000\ue000\ue000\n\n    \ue000 \ue000 \ue000 \ue000 \ue000\ue000 \ue000 \ue000 \ue000 \ue000\ue000\n\n    \ue000 \ue000 \ue000\ue000\ue000\ue000grad_output.dtype)\n\n    \ue000 \ue000 \ue000\n    \ue000 \ue000 \ue000\ue000\ue000\ue000\ue000\n\n    \ue000 \ue000\ue000 \ue000\ue000 \ue000\n\ndef make_inputs() -> list:\n    device = torch.device(\"cuda\")\n    x = torch.randn((BATCH_SIZE, SEQ_LEN, HIDDEN_SIZE), device=device, dtype=\ue000\ue000\ue000\ue000\n    x \ue000 \ue000 \ue000 \ue000\ue000\ue000rand((BATCH_SIZE, SEQ_LEN\ue000 \ue000\ue000, device=device, dtype=\ue000\ue000\ue000\ue000 * 1.5 + 0.5)\n    rstd = torch.rsqrt(x.pow(2\ue000\ue000\ue000\ue000\ue000\ue000\ue000\ue000\ue000 \ue000\ue000\ue000\ue000 + 1e-6)\n    normalized \ue000 \ue000 \ue000 \ue000\n    weight = torch.randn((HIDDEN_SIZE,), device=device, dtype=\ue000\ue000\ue000\ue000 * 0.1 + 1.0\n    grad_output = \ue000\ue000\ue000randn((BATCH_SIZE, SEQ_LEN, HIDDEN_SIZE), device=device, dtype=\ue000\ue000\ue000\ue000\n                   + 0.5 * normalized * weight)\ue000\ue000\ue000\ue000\ue000\ue000\ue000\n    return [grad_output, normalized, rstd, weight]\n",
+ "runs": [
+  [
+   74,
+   3
+  ],
+  [
+   2,
+   7
+  ],
+  [
+   10,
+   7
+  ],
+  [
+   23,
+   17
+  ],
+  [
+   13,
+   4
+  ],
+  [
+   13,
+   4
+  ],
+  [
+   13,
+   3
+  ],
+  [
+   55,
+   4
+  ],
+  [
+   49,
+   6
+  ],
+  [
+   78,
+   19
+  ],
+  [
+   110,
+   5
+  ],
+  [
+   198,
+   19
+  ],
+  [
+   221,
+   11
+  ],
+  [
+   241,
+   6
+  ],
+  [
+   260,
+   16
+  ],
+  [
+   55,
+   4
+  ],
+  [
+   130,
+   3
+  ],
+  [
+   54,
+   3
+  ],
+  [
+   93,
+   3
+  ],
+  [
+   55,
+   4
+  ],
+  [
+   204,
+   13
+  ],
+  [
+   130,
+   4
+  ],
+  [
+   55,
+   4
+  ],
+  [
+   54,
+   3
+  ],
+  [
+   55,
+   4
+  ],
+  [
+   244,
+   7
+  ]
+ ],
+ "sha256": "25b2561427783d6fd9f6a42db2c6fef91cb2b28d5e3e16cd6810dfa839995ed3"
+}

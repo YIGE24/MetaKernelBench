@@ -1,0 +1,79 @@
+{
+ "problem": "39_adaln_modulation_output_projection_flux_kontext_fp32",
+ "category": "mlp_norm",
+ "subset": "L1",
+ "row": 35,
+ "workload": 1,
+ "layout": "\ue000\ue000\ue000Normalize hidden states, generate SiLU-conditioned scale and shift parameters, and project the modulated output.\ue000\ue000\ue000\n\n\ue000 Source: SOL-ExecBench\n# Reference: SOL-ExecBench/data/benchmark/L1/\ue001\n# Workload: SOL-ExecBench/data/benchmark/L1/\ue001/workload.jsonl\n#   record \ue002 (batch and sequence axes and eps exact; values re-drawn\n#   per draw)\n# License: NVIDIA Evaluation Dataset License Agreement\n# Notice: Derived from the nvidia/SOL-ExecBench dataset, Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES.\n#   Assembled locally from your own copy of that dataset; not covered by this repository's Apache-2.0 license.\n\nimport math\n\n\ue000 \ue000\n\ue000 \ue000\ue000\ue000\ue000\ue000 \ue000 \ue000\n\nBATCH_SIZE = 32\nSEQ_LEN = 256\nINNER_DIM = 3072\nOUTPUT_DIM = 64\nMODULATION_DIM = INNER_DIM * 2\n\n\ue000\ue000\ue000\ue000\ue000\ue000\n\ue000 reference\ue000\n    \ue000\ue000 \ue000\ue000\ue000\ue000\n    \ue000\ue000 \ue000\ue000\ue000\ue000\n    \ue000\ue000 \ue000\ue000\ue000\ue000\n    \ue000\ue000 \ue000\ue000\ue000\ue000\n    \ue000\ue000 \ue000\ue000\ue000\ue000\n    \ue000\ue000 \ue000\ue000\ue000\ue000\n    \ue000\ue000 \ue000\ue000\n\ue000 -> \ue000\ue000\ue000:\n    \ue000 \ue000 \ue000\ue000\ue000\ue000\ue000\ue000\ue000\ue000\ue000 \ue000\ue000\ue000\ue000\n    \ue000 \ue000 \ue000\ue000\ue000\ue000\ue000\ue000\ue000\ue000\ue000 \ue000\ue000\ue000\ue000 \ue000\ue000\ue000\ue000\n    \ue000 \ue000 \ue000\ue000 \ue000 \ue000\ue000 \ue000 \ue000\ue000\ue000\ue000\ue000 \ue000 \ue000\ue000\n\n    \ue000 \ue000 \ue000 \ue000 \ue000\ue000\ue000\ue000\ue000\ue000\n    \ue000 \ue000 \ue000\ue000\ue000\ue000\ue000\ue000 \ue000\ue000 \ue000\ue000\n\n    \ue000 \ue000 \ue000\ue000\ue000\ue000\ue000\ue000\ue000\n    \ue000 \ue000 \ue000\ue000\ue000\ue000 \ue000\ue000\ue000\n    \ue000 \ue000 \ue000\ue000\ue000\ue000 \ue000\ue000\ue000\n\n    \ue000 \ue000 \ue000\ue000\ue000\ue000\ue000\ue000\n    \ue000 \ue000 \ue000\ue000\ue000\ue000\ue000\ue000\n    \ue000 \ue000 \ue000 \ue000 \ue000\ue000\ue000\ue000 \ue000 \ue000\ue000 \ue000 \ue000\n\n    \ue000 \ue000 \ue000\ue000\ue000\ue000\ue000\ue000 \ue000\ue000 \ue000\ue000\n\n    \ue000 \ue000\n\ndef make_inputs() -> list:\n    device = torch.device(\"cuda\")\n    return [\n        torch.randn((BATCH_SIZE, SEQ_LEN, INNER_DIM), device=device, dtype=torch.float32),\n        torch.randn((BATCH_SIZE, INNER_DIM), device=device, dtype=torch.float32),\n        torch.randn((MODULATION_DIM, INNER_DIM), device=device, dtype=torch.float32) / math\ue000\ue000\ue000INNER_DIM),\n        torch.randn((MODULATION_DIM,), device=device, dtype=torch.float32),\n        torch.randn((OUTPUT_DIM, INNER_DIM), device=device, dtype=torch.float32) / math\ue000\ue000\ue000INNER_DIM),\n        torch.randn((OUTPUT_DIM,), device=device, dtype=torch.float32),\n        1e-06,\n    ]\n",
+ "runs": [
+  [
+   61,
+   3
+  ],
+  [
+   163,
+   4
+  ],
+  [
+   0,
+   10
+  ],
+  [
+   10,
+   7
+  ],
+  [
+   18,
+   42
+  ],
+  [
+   21,
+   3
+  ],
+  [
+   184,
+   50
+  ],
+  [
+   255,
+   10
+  ],
+  [
+   284,
+   12
+  ],
+  [
+   302,
+   18
+  ],
+  [
+   326,
+   9
+  ],
+  [
+   357,
+   8
+  ],
+  [
+   373,
+   8
+  ],
+  [
+   389,
+   13
+  ],
+  [
+   425,
+   14
+  ],
+  [
+   227,
+   3
+  ],
+  [
+   227,
+   3
+  ]
+ ],
+ "sha256": "896c1aaff9caec34230e84dd7956eaddb909a4f003cd0d8e0fe48cbf99a5dbbc"
+}

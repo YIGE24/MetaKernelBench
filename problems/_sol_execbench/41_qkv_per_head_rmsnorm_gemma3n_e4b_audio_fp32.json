@@ -1,0 +1,111 @@
+{
+ "problem": "41_qkv_per_head_rmsnorm_gemma3n_e4b_audio_fp32",
+ "category": "mlp_norm",
+ "subset": "L1",
+ "row": 53,
+ "workload": 5,
+ "layout": "\ue000\ue000\ue000Project hidden states into query, key, and value heads and apply \ue000\ue000\ue000 \ue000 \ue000 to query and key.\ue000\ue000\ue000\n\n# Source: SOL-ExecBench\n# Reference: SOL-ExecBench/data/benchmark/L1/\ue001\n# Workload: SOL-ExecBench/data/benchmark/L1/\ue001/workload.jsonl\n#   record \ue002 (batch and sequence axes and eps exact; values re-drawn\n#   per draw, norm weights drawn near the trained regime)\n# License: NVIDIA Evaluation Dataset License Agreement\n# Notice: Derived from the nvidia/SOL-ExecBench dataset, Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES.\n#   Assembled locally from your own copy of that dataset; not covered by this repository's Apache-2.0 license.\n\nimport math\n\nimport torch\n\nBATCH_SIZE = 64\nSEQ_LEN = 128\nHIDDEN_SIZE = 1024\nNUM_HEADS = 8\nHEAD_DIM = 128\nQKV_OUT_SIZE = NUM_HEADS * HEAD_DIM\n\n\ue000\ue000\ue000\ue000\ue000\ue000\n\ue000 reference\ue000\n    \ue000\ue000 \ue000\ue000\ue000\ue000\n    \ue000\ue000 \ue000\ue000\ue000\ue000\n    \ue000\ue000 \ue000\ue000\ue000\ue000\n    \ue000\ue000 \ue000\ue000\ue000\ue000\n    \ue000\ue000 \ue000\ue000\ue000\ue000\n    \ue000\ue000 \ue000\ue000\ue000\ue000\n    \ue000\ue000 \ue000\ue000\n\ue000 -> tuple[\ue000\ue000\ue000\ue000 \ue000\ue000\ue000\ue000 \ue000\ue000\ue000]:\n    \ue000\ue000 \ue000\ue000 _ \ue000 \ue000\ue000\ue000\n    \ue000 \ue000 \ue000\n    \ue000 \ue000 \ue000\n\n    \ue000 \ue000 \ue000\ue000\ue000\ue000\ue000\ue000 \ue000\ue000\ue000\ue000\ue000\ue000\n    \ue000 \ue000 \ue000\ue000\ue000\ue000\ue000\ue000 \ue000\ue000\ue000\ue000\ue000\ue000\n    \ue000 \ue000 \ue000\ue000\ue000\ue000\ue000\ue000 \ue000\ue000\ue000\ue000\ue000\ue000\n\n    \ue000 \ue000 \ue000\ue000\ue000\ue000\ue000\ue000 \ue000\ue000 \ue000\ue000 \ue000\ue000\n    \ue000 \ue000 \ue000\ue000\ue000\ue000\ue000\ue000 \ue000\ue000 \ue000\ue000 \ue000\ue000\n    \ue000 \ue000 \ue000\ue000\ue000\ue000\ue000\ue000 \ue000\ue000 \ue000\ue000 \ue000\ue000\n\n    \ue000 \ue000 \ue000\ue000\ue000\ue000\ue000\ue000\ue000\ue000\ue000\ue000\ue000\ue000\ue000\ue000 \ue000\ue000\ue000\ue000\n    \ue000 \ue000 \ue000 \ue000 \ue000\ue000\ue000\ue000\ue000 \ue000 \ue000\ue000\n    \ue000 \ue000 \ue000 \ue000 \ue000\n\n    \ue000 \ue000 \ue000\ue000\ue000\ue000\ue000\ue000\ue000\ue000\ue000\ue000\ue000\ue000\ue000\ue000 \ue000\ue000\ue000\ue000\n    \ue000 \ue000 \ue000 \ue000 \ue000\ue000\ue000\ue000\ue000 \ue000 \ue000\ue000\n    \ue000 \ue000 \ue000 \ue000 \ue000\n\n    \ue000 \ue000 \ue000\n\n    \ue000 \ue000\ue000 \ue000\ue000 \ue000\n\ndef make_inputs() -> list:\n    device \ue000 \ue000\ue000device(\"cuda\")\n    return [\n        torch.randn((BATCH_SIZE, SEQ_LEN, HIDDEN_SIZE), device=device, dtype\ue000\ue000\ue000float32),\n        torch.randn((QKV_OUT_SIZE, HIDDEN_SIZE), device=device, dtype\ue000\ue000\ue000float32) / math\ue000\ue000\ue000HIDDEN_SIZE),\n        torch.randn((QKV_OUT_SIZE, HIDDEN_SIZE), device=device, dtype\ue000\ue000\ue000float32) / math\ue000\ue000\ue000HIDDEN_SIZE),\n        torch.randn((QKV_OUT_SIZE, HIDDEN_SIZE), device=device, dtype\ue000\ue000\ue000float32) / math\ue000\ue000\ue000HIDDEN_SIZE),\n        torch.randn((HEAD_DIM,), device=device, dtype\ue000\ue000\ue000float32) * 0.1 + 1.0,\n        torch.randn((HEAD_DIM,), device=device, dtype\ue000\ue000\ue000float32) * 0.1 + 1.0,\n        1e-06,\n    ]\n",
+ "runs": [
+  [
+   53,
+   3
+  ],
+  [
+   60,
+   5
+  ],
+  [
+   53,
+   3
+  ],
+  [
+   2,
+   7
+  ],
+  [
+   10,
+   42
+  ],
+  [
+   13,
+   4
+  ],
+  [
+   13,
+   4
+  ],
+  [
+   13,
+   3
+  ],
+  [
+   71,
+   4
+  ],
+  [
+   187,
+   10
+  ],
+  [
+   231,
+   42
+  ],
+  [
+   301,
+   42
+  ],
+  [
+   360,
+   37
+  ],
+  [
+   405,
+   37
+  ],
+  [
+   451,
+   9
+  ],
+  [
+   232,
+   3
+  ],
+  [
+   232,
+   3
+  ],
+  [
+   232,
+   3
+  ],
+  [
+   385,
+   3
+  ],
+  [
+   232,
+   3
+  ],
+  [
+   385,
+   3
+  ],
+  [
+   232,
+   3
+  ],
+  [
+   385,
+   3
+  ],
+  [
+   232,
+   3
+  ],
+  [
+   232,
+   3
+  ]
+ ],
+ "sha256": "138c196f87d7b26bd1085af14de3dfcf293fa01f419e1684979a4ec127e03db4"
+}

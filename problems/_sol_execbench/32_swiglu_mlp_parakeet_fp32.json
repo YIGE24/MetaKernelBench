@@ -1,0 +1,43 @@
+{
+ "problem": "32_swiglu_mlp_parakeet_fp32",
+ "category": "mlp_norm",
+ "subset": "L1",
+ "row": 73,
+ "workload": 9,
+ "layout": "\"\"\"Compute a fused gate-up projection, apply SiLU gating, and project the result back to the hidden size.\"\"\"\n\n# Source: SOL-ExecBench\n# Reference: SOL-ExecBench/data/benchmark/L1/\ue001\n# Workload: SOL-ExecBench/data/benchmark/L1/\ue001/workload.jsonl\n#   record \ue002 (batch and sequence axes exact; values re-drawn per draw)\n# License: NVIDIA Evaluation Dataset License Agreement\n# Notice: Derived from the nvidia/SOL-ExecBench dataset, Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES.\n#   Assembled locally from your own copy of that dataset; not covered by this repository's Apache-2.0 license.\n\nimport math\n\n\ue000 \ue000\n\ue000 \ue000\ue000\ue000\ue000\ue000 \ue000 \ue000\n\nBATCH_SIZE = 64\nSEQ_LEN = 128\nHIDDEN_SIZE = 1024\nINTERMEDIATE_SIZE = 4096\nINTERMEDIATE_SIZE_X2 = INTERMEDIATE_SIZE * 2\n\n\ue000\ue000\ue000\ue000\ue000\ue000\n\ue000 reference\ue000\ue000\ue000 \ue000\ue000\ue000\ue000 \ue000\ue000 \ue000\ue000\ue000\ue000 \ue000\ue000 \ue000\ue000\ue000\ue000 \ue000\ue000 \ue000\ue000\ue000\ue000\n    \ue000 \ue000 \ue000\ue000\ue000\ue000\ue000\ue000 \ue000\ue000\n\n    \ue000\ue000 \ue000 \ue000 \ue000\ue000\ue000\ue000\ue000\ue000 \ue000\ue000\ue000\ue000\ue000\n\n    \ue000 \ue000 \ue000 \ue000 \ue000\ue000\ue000\ue000\ue000\ue000\n    \ue000 \ue000 \ue000 \ue000 \ue000\n\n    \ue000 \ue000 \ue000\ue000\ue000\ue000\ue000\ue000 \ue000\ue000\n\n    \ue000 \ue000\n\ndef make_inputs(\ue000 \ue000\ue000 list:\n    device = torch.device(\"cuda\")\n    return [\n        torch.randn((BATCH_SIZE, SEQ_LEN, HIDDEN_SIZE), device=device, dtype=torch.float32),\n        torch.randn((INTERMEDIATE_SIZE_X2, HIDDEN_SIZE), device=device, dtype=torch.float32) / math.sqrt(HIDDEN_SIZE),\n        torch.randn((HIDDEN_SIZE, INTERMEDIATE_SIZE), device=device, dtype=torch.float32)\n        / math.sqrt(INTERMEDIATE_SIZE),\n    ]\n",
+ "runs": [
+  [
+   0,
+   10
+  ],
+  [
+   10,
+   7
+  ],
+  [
+   18,
+   25
+  ],
+  [
+   104,
+   10
+  ],
+  [
+   135,
+   15
+  ],
+  [
+   178,
+   15
+  ],
+  [
+   219,
+   12
+  ],
+  [
+   36,
+   3
+  ]
+ ],
+ "sha256": "9bf9716dcb4893880337a176d3032f4a0f61b34844aa4ddf3785e6cec62acf97"
+}

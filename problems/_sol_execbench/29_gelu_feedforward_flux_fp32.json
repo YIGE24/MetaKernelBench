@@ -1,0 +1,51 @@
+{
+ "problem": "29_gelu_feedforward_flux_fp32",
+ "category": "mlp_norm",
+ "subset": "L1",
+ "row": 36,
+ "workload": 6,
+ "layout": "\ue000\ue000\ue000Apply a linear projection, tanh-approximate GELU activation, and a second linear projection.\ue000\ue000\ue000\n\n\ue000 Source: SOL-ExecBench\n# Reference: SOL-ExecBench/data/benchmark/L1/\ue001\n# Workload: SOL-ExecBench/data/benchmark/L1/\ue001/workload.jsonl\n#   record \ue002 (batch and sequence axes exact; values re-drawn per draw)\n# License: NVIDIA Evaluation Dataset License Agreement\n# Notice: Derived from the nvidia/SOL-ExecBench dataset, Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES.\n#   Assembled locally from your own copy of that dataset; not covered by this repository's Apache-2.0 license.\n\nimport math\n\n\ue000 \ue000\n\ue000 \ue000\ue000\ue000\ue000\ue000 \ue000 \ue000\n\nBATCH_SIZE = 32\nSEQ_LEN = 512\nHIDDEN_DIM = 3072\nMLP_HIDDEN_DIM = 12288\n\n\ue000\ue000\ue000\ue000\ue000\ue000\n\ue000 reference\ue000\n    \ue000\ue000 \ue000\ue000\ue000\ue000\n    \ue000\ue000 \ue000\ue000\ue000\ue000\n    \ue000\ue000 \ue000\ue000\ue000\ue000\n    \ue000\ue000 \ue000\ue000\ue000\ue000\n    \ue000\ue000 \ue000\ue000\ue000\ue000\n\ue000 -> \ue000\ue000\ue000:\n    \ue000 \ue000 \ue000\ue000\ue000\ue000\ue000\ue000 \ue000\ue000 \ue000\ue000\n\n    \ue000 \ue000 \ue000\ue000\ue000\ue000\ue000\ue000 \ue000\ue000\ue000\ue000\ue000\ue000\n\n    \ue000 \ue000 \ue000\ue000\ue000\ue000\ue000\ue000 \ue000\ue000 \ue000\ue000\n\n    \ue000 \ue000\n\ndef make_inputs(\ue000 \ue000\ue000 list:\n    device = torch.device(\"cuda\")\n    return [\n        torch.randn((BATCH_SIZE, SEQ_LEN, HIDDEN_DIM), device=device, dtype=torch.float32),\n        torch.randn((MLP_HIDDEN_DIM, HIDDEN_DIM), device=device, dtype=torch.float32) / math.sqrt(HIDDEN_DIM),\n        torch.randn((MLP_HIDDEN_DIM,), device=device, dtype=torch.float32),\n        torch.randn((HIDDEN_DIM, MLP_HIDDEN_DIM), device=device, dtype=torch.float32) / math.sqrt(MLP_HIDDEN_DIM),\n        torch.randn((HIDDEN_DIM,), device=device, dtype=torch.float32),\n    ]\n",
+ "runs": [
+  [
+   53,
+   3
+  ],
+  [
+   133,
+   4
+  ],
+  [
+   0,
+   10
+  ],
+  [
+   12,
+   7
+  ],
+  [
+   20,
+   32
+  ],
+  [
+   23,
+   3
+  ],
+  [
+   159,
+   12
+  ],
+  [
+   217,
+   14
+  ],
+  [
+   254,
+   14
+  ],
+  [
+   71,
+   3
+  ]
+ ],
+ "sha256": "6c667bea77b17c6546e041353f6ac882675ae8da7cd206711f2989b471069b97"
+}

@@ -1,0 +1,79 @@
+{
+ "problem": "31_groupnorm_sd15_fp32",
+ "category": "mlp_norm",
+ "subset": "L1",
+ "row": 77,
+ "workload": 10,
+ "layout": "\ue000\ue000\ue000Group normalization with affine over spatial feature maps from Stable Diffusion 1.5.\ue000\ue000\ue000\n\n# Source: SOL-ExecBench\n# Reference: SOL-ExecBench/data/benchmark/L1/\ue001\n# Workload: SOL-ExecBench/data/benchmark/L1/\ue001/workload.jsonl\n#   record \ue002 (axes and eps exact; values re-drawn per draw, affine\n#   parameters drawn near the trained regime)\n# License: NVIDIA Evaluation Dataset License Agreement\n# Notice: Derived from the nvidia/SOL-ExecBench dataset, Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES.\n#   Assembled locally from your own copy of that dataset; not covered by this repository's Apache-2.0 license.\n\nimport torch\n\nBATCH_SIZE = 32\nNUM_CHANNELS = 1280\nHEIGHT = 8\nWIDTH = 8\nEPS = 1e-05\n\n\ue000\ue000\ue000\ue000\ue000\ue000\n\ue000 reference\ue000\ue000\ue000 \ue000\ue000\ue000\ue000 \ue000\ue000 \ue000\ue000\ue000\ue000 \ue000\ue000 \ue000\ue000\ue000\ue000 \ue000\ue000 \ue000\ue000 \ue000\ue000 \ue000\ue000\ue000\ue000\n    \ue000\ue000 \ue000\ue000 \ue000\ue000 \ue000 \ue000 \ue000\ue000\ue000\n    \ue000 \ue000 \ue000\n\n    compute_dtype = torch.promote_types\ue000\ue000\ue000\ue000, \ue000\ue000\ue000\ue000\n\n    \ue000 \ue000 \ue000\ue000\ue000\ue000\ue000\ue000 \ue000\ue000 \ue000 \ue000\ue000 \ue000\ue000 \ue000\ue000 \ue000\ue000\n\n    \ue000 \ue000 \ue000\ue000\ue000\ue000compute_dtype\ue000\n    \ue000 \ue000 \ue000\ue000\ue000\ue000\ue000\ue000\ue000\ue000\ue000 \ue000\ue000 \ue000\ue000\ue000 \ue000\ue000\ue000\ue000\n    \ue000 \ue000 \ue000\ue000\ue000\ue000\ue000\ue000\ue000\ue000\ue000 \ue000\ue000 \ue000\ue000\ue000 \ue000\ue000\ue000\ue000 \ue000\ue000\ue000\ue000\n\n    \ue000 \ue000 \ue000\ue000 \ue000 \ue000\ue000 \ue000 \ue000\ue000\ue000\ue000\ue000 \ue000 \ue000\ue000\n\n    \ue000 \ue000 \ue000\ue000\ue000\ue000\ue000\ue000 \ue000\ue000 \ue000\ue000 \ue000\ue000\n\n    \ue000 \ue000 \ue000\ue000\ue000\ue000\ue000\ue000 \ue000\ue000 \ue000\ue000 \ue000\ue000\n    \ue000 \ue000 \ue000\ue000\ue000\ue000\ue000\ue000 \ue000\ue000 \ue000\ue000 \ue000\ue000\n    \ue000 \ue000 \ue000 \ue000 \ue000 \ue000 \ue000\n\n    \ue000 \ue000\ue000\ue000\ue000\ue000\ue000\ue000\ue000\n\ndef make_inputs(\ue000 \ue000\ue000 list:\n    device = torch.device(\"cuda\")\n    x = torch.randn(BATCH_SIZE, NUM_CHANNELS, HEIGHT, WIDTH, device=device, dtype=\ue000\ue000\ue000\ue000\n    weight = 1 + 0.1 * torch.randn(NUM_CHANNELS, device=device, dtype=\ue000\ue000\ue000\ue000\n    bias = 0.1 * torch.randn(NUM_CHANNELS, device=device, dtype=\ue000\ue000\ue000\ue000\n    return [x, weight, bias, EPS]\n",
+ "runs": [
+  [
+   39,
+   3
+  ],
+  [
+   39,
+   3
+  ],
+  [
+   2,
+   7
+  ],
+  [
+   10,
+   29
+  ],
+  [
+   107,
+   14
+  ],
+  [
+   344,
+   4
+  ],
+  [
+   178,
+   4
+  ],
+  [
+   141,
+   19
+  ],
+  [
+   172,
+   6
+  ],
+  [
+   181,
+   45
+  ],
+  [
+   241,
+   16
+  ],
+  [
+   270,
+   14
+  ],
+  [
+   305,
+   44
+  ],
+  [
+   32,
+   3
+  ],
+  [
+   178,
+   4
+  ],
+  [
+   178,
+   4
+  ],
+  [
+   178,
+   4
+  ]
+ ],
+ "sha256": "460e2dff6d943a00fec1b26698d3b146dffdb4d375f739f4f9ad2e7c7f416df0"
+}

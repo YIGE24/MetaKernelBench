@@ -1,0 +1,75 @@
+{
+ "problem": "33_residual_rmsnorm_swiglu_mlp_hermes_bf16",
+ "category": "mlp_norm",
+ "subset": "L2",
+ "row": 3,
+ "workload": 4,
+ "layout": "\ue000\ue000\ue000Add a residual, apply RMS normalization, and compute a SwiGLU MLP projection.\ue000\ue000\ue000\n\n\ue000 Source: SOL-ExecBench\n# Reference: SOL-ExecBench/data/benchmark/L2/\ue001\n# Workload: SOL-ExecBench/data/benchmark/L2/\ue001/workload.jsonl\n#   record \ue002 (batch and sequence axes and eps exact;\n#   values re-drawn per draw, norm weight drawn near the trained regime)\n# License: NVIDIA Evaluation Dataset License Agreement\n# Notice: Derived from the nvidia/SOL-ExecBench dataset, Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES.\n#   Assembled locally from your own copy of that dataset; not covered by this repository's Apache-2.0 license.\n\nimport math\n\n\ue000 \ue000\n\ue000 \ue000\ue000\ue000\ue000\ue000 \ue000 \ue000\n\nBATCH_SIZE = 64\nSEQ_LEN = 128\nHIDDEN_SIZE = 16384\nINTERMEDIATE_SIZE = 53248\n\n\ue000\ue000\ue000\ue000\ue000\ue000\n\ue000 reference\ue000\n    \ue000\ue000 \ue000\ue000\ue000\ue000\n    \ue000\ue000 \ue000\ue000\ue000\ue000\n    \ue000\ue000 \ue000\ue000\ue000\ue000\n    \ue000\ue000 \ue000\ue000\ue000\ue000\n    \ue000\ue000 \ue000\ue000\ue000\ue000\n    \ue000\ue000 \ue000\ue000\ue000\ue000\n    \ue000\ue000 \ue000\ue000\n\ue000 -> \ue000\ue000\ue000:\n    \ue000 \ue000 \ue000 \ue000 \ue000\n\n    \ue000 \ue000 \ue000\ue000\ue000\n    compute_dtype = torch.promote_types(input_dtype, \ue000\ue000\ue000\ue000\n    \ue000 \ue000 \ue000\ue000\ue000\ue000compute_dtype)\n\n    \ue000 \ue000 \ue000\ue000\ue000\ue000\ue000\ue000\ue000\ue000\ue000\ue000\ue000\ue000\ue000\ue000 \ue000\ue000\ue000\ue000\n    \ue000 \ue000 \ue000 \ue000 \ue000\ue000\ue000\ue000\ue000 \ue000 \ue000\ue000\n    \ue000 \ue000 \ue000\ue000 \ue000 \ue000\ue000\ue000\ue000\ue000\ue000\ue000\n\n    \ue000 \ue000 \ue000\ue000\ue000\ue000\ue000\ue000 \ue000\ue000\n    \ue000 \ue000 \ue000\ue000\ue000\ue000\ue000\ue000 \ue000\ue000\n\n    \ue000 \ue000 \ue000\ue000\ue000\ue000\ue000\ue000 \ue000 \ue000\n\n    \ue000 \ue000 \ue000\ue000\ue000\ue000\ue000\ue000 \ue000\ue000\n\n    \ue000 \ue000\n\ndef make_inputs() -> list:\n    device = torch.device(\"cuda\")\n    return [\n        torch.randn((BATCH_SIZE, SEQ_LEN, HIDDEN_SIZE), device=device, dtype=torch.bfloat16),\n        torch.randn((BATCH_SIZE, SEQ_LEN, HIDDEN_SIZE), device=device, dtype=torch.bfloat16),\n        torch.randn((HIDDEN_SIZE,), device=device, dtype=torch.bfloat16) * 0.1 + 1.0,\n        torch.randn((INTERMEDIATE_SIZE, HIDDEN_SIZE), device=device, dtype=torch.bfloat16) / math.sqrt(HIDDEN_SIZE),\n        torch.randn((INTERMEDIATE_SIZE, HIDDEN_SIZE), device=device, dtype=torch.bfloat16) / math.sqrt(HIDDEN_SIZE),\n        torch.randn((HIDDEN_SIZE, INTERMEDIATE_SIZE), device=device, dtype=torch.bfloat16)\n        / math.sqrt(INTERMEDIATE_SIZE),\n        1e-05,\n    ]\n",
+ "runs": [
+  [
+   61,
+   3
+  ],
+  [
+   157,
+   4
+  ],
+  [
+   0,
+   10
+  ],
+  [
+   10,
+   7
+  ],
+  [
+   18,
+   42
+  ],
+  [
+   21,
+   3
+  ],
+  [
+   176,
+   5
+  ],
+  [
+   193,
+   5
+  ],
+  [
+   204,
+   4
+  ],
+  [
+   198,
+   6
+  ],
+  [
+   226,
+   20
+  ],
+  [
+   260,
+   24
+  ],
+  [
+   317,
+   10
+  ],
+  [
+   340,
+   10
+  ],
+  [
+   382,
+   10
+  ],
+  [
+   405,
+   12
+  ]
+ ],
+ "sha256": "0507812a092f3b5a06ba91b3025a073be05a40e416d4d6a0def00db5cfbaf00d"
+}

@@ -1,0 +1,103 @@
+{
+ "problem": "30_gelu_grn_mlp_convnextv2_fp32",
+ "category": "mlp_norm",
+ "subset": "L1",
+ "row": 44,
+ "workload": 4,
+ "layout": "\"\"\"Apply a linear-GELU projection, global response normalization, and a linear output projection.\"\"\"\n\n# Source: SOL-ExecBench\n# Reference: SOL-ExecBench/data/benchmark/L1/\ue001\n# Workload: SOL-ExecBench/data/benchmark/L1/\ue001/workload.jsonl\n#   record \ue002 (batch and spatial axes and eps exact; values re-drawn\n#   per draw)\n# License: NVIDIA Evaluation Dataset License Agreement\n# Notice: Derived from the nvidia/SOL-ExecBench dataset, Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES.\n#   Assembled locally from your own copy of that dataset; not covered by this repository's Apache-2.0 license.\n\nimport math\n\n\ue000 \ue000\n\ue000 \ue000\ue000\ue000\ue000\ue000 \ue000 \ue000\n\nBATCH_SIZE = 64\nHEIGHT = 56\nWIDTH = 56\nDIM = 128\nHIDDEN_DIM = 512\n\n\ue000\ue000\ue000\ue000\ue000\ue000\n\ue000 reference\ue000\n    \ue000\ue000 \ue000\ue000\ue000\ue000\n    \ue000\ue000 \ue000\ue000\ue000\ue000\n    \ue000\ue000 \ue000\ue000\ue000\ue000\n    \ue000\ue000 \ue000\ue000\ue000\ue000\n    \ue000\ue000 \ue000\ue000\ue000\ue000\n    \ue000\ue000 \ue000\ue000\ue000\ue000\n    \ue000\ue000 \ue000\ue000\ue000\ue000\n    \ue000\ue000 \ue000\ue000\n\ue000 -> \ue000\ue000\ue000:\n    \ue000 \ue000 \ue000\ue000\ue000\ue000\ue000\ue000 \ue000\ue000 \ue000\ue000\n\n    \ue000 \ue000 \ue000\ue000\ue000\ue000\ue000\ue000\n\n    \ue000 \ue000 \ue000\ue000\ue000\ue000\ue000\ue000\ue000\ue000 \ue000\ue000\ue000\ue000 \ue000\ue000\ue000\ue000\ue000 \ue000\ue000\ue000 \ue000\ue000\ue000\ue000\n\n    \ue000 \ue000 \ue000 \ue000 \ue000\ue000\ue000\ue000\ue000\ue000\ue000\ue000\ue000\ue000 \ue000\ue000\ue000\ue000 \ue000 \ue000\ue000\n\n    \ue000 \ue000 \ue000 \ue000 \ue000\ue000 \ue000 \ue000\ue000 \ue000 \ue000 \ue000 \ue000\n\n    \ue000 \ue000 \ue000\ue000\ue000\ue000\ue000\ue000 \ue000\ue000 \ue000\ue000\n\n    \ue000 \ue000\n\ndef make_inputs(\ue000 \ue000\ue000 list:\n    device \ue000 \ue000\ue000device(\"cuda\")\n    return [\n        torch.randn((BATCH_SIZE, HEIGHT, WIDTH, DIM), device=device, dtype\ue000\ue000\ue000float32),\n        torch.randn((HIDDEN_DIM, DIM), device=device, dtype\ue000\ue000\ue000float32) / math.sqrt(DIM),\n        torch.randn((HIDDEN_DIM,), device=device, dtype\ue000\ue000\ue000float32),\n        torch.randn(\ue000\ue000\ue000 \ue000\ue000 \ue000\ue000 HIDDEN_DIM), device=device, dtype\ue000\ue000\ue000float32) / math.sqrt(HIDDEN_DIM),\n        torch.randn(\ue000\ue000\ue000 \ue000\ue000 \ue000\ue000 HIDDEN_DIM), device=device, dtype\ue000\ue000\ue000float32),\n        torch.randn((DIM, HIDDEN_DIM), device=device, dtype\ue000\ue000\ue000float32) / math.sqrt(HIDDEN_DIM),\n        torch.randn((DIM,), device=device, dtype\ue000\ue000\ue000float32),\n        1e-06,\n    ]\n",
+ "runs": [
+  [
+   0,
+   10
+  ],
+  [
+   10,
+   7
+  ],
+  [
+   18,
+   48
+  ],
+  [
+   21,
+   3
+  ],
+  [
+   103,
+   12
+  ],
+  [
+   118,
+   8
+  ],
+  [
+   168,
+   26
+  ],
+  [
+   222,
+   21
+  ],
+  [
+   263,
+   13
+  ],
+  [
+   300,
+   14
+  ],
+  [
+   79,
+   3
+  ],
+  [
+   169,
+   3
+  ],
+  [
+   169,
+   3
+  ],
+  [
+   169,
+   3
+  ],
+  [
+   169,
+   3
+  ],
+  [
+   184,
+   3
+  ],
+  [
+   162,
+   4
+  ],
+  [
+   169,
+   3
+  ],
+  [
+   184,
+   3
+  ],
+  [
+   162,
+   4
+  ],
+  [
+   169,
+   3
+  ],
+  [
+   169,
+   3
+  ],
+  [
+   169,
+   3
+  ]
+ ],
+ "sha256": "eb29fa52de93c410fb36c1102cb0678a79743a6a364c73655b1b83a9f532d094"
+}
